@@ -270,31 +270,34 @@ bool BST<T>::contain(const TreeNode* const node, const T& value) const {
 
 template <class T>
 bool BST<T>::remove(TreeNode*& node, const T& value) {
-  if (node == NULL) return false;
-
+   if (node == nullptr) {
+    return false;
+   }
   if (value < node->data) {
     return remove(node->left, value);
-  }if (node->data < value) {
-    return remove(node->right, value);
-  }
-
-  if (node->left == NULL && node->right == NULL) {
-    delete node;
-    node = NULL;
-  } else if (node->left == NULL) {
-    TreeNode* temp = node;
-    node = node->right;
-    delete temp;
-  } else if (node->right == NULL) {
-    TreeNode* temp = node;
-    node = node->left;
-    delete temp;
+  } else if (node->data < value) {
+    return remove(node->right, value); 
   } else {
-    TreeNode* next = node->right->min();
-    node->data = next->data;
-    return remove(node->right, next->data);
+    if (node->left == nullptr && node->right == nullptr) {
+      delete node;
+      node = nullptr;
+    }else if (node->left == nullptr) {
+      TreeNode* temp = node;
+      node = node->right;
+      temp->right = nullptr;
+      delete temp;
+    }else if (node->right == nullptr) {
+      TreeNode* temp = node;
+      node = node->left;
+      temp->left = nullptr;
+      delete temp;
+    }else {
+      TreeNode* successor = node->right->min(); 
+      node->data = successor->data;           
+      remove(node->right, successor->data);     
+    }
+    return true;
   }
-  return true;
 }
 
 template <class T>

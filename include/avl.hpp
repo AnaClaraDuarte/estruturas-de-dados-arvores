@@ -226,17 +226,20 @@ class AVL {
 
 template <class T>
 int AVL<T>::height(TreeNode* node) const {
-  return node ? node->height : -1;
+  if (node == NULL) {
+    return -1;
+  }
+  return 1 + std::max(height(node->left), height(node->right));
 }
 
 template <class T>
 void AVL<T>::balance(TreeNode*& node) {
-  if (node == NULL) return;
-
+  if (node == NULL) return; 
+  
   int balance_factor = height(node->left) - height(node->right);
 
   if (balance_factor > 1) {
-    if (height(node->left->left) > height(node->left->right)) {
+    if (height(node->left->left) < height(node->left->right)) {
       TreeNode* leftChild = node->left;
       TreeNode* lrChild = leftChild->right;
       leftChild->right = lrChild->left;
@@ -251,7 +254,7 @@ void AVL<T>::balance(TreeNode*& node) {
     node = temp;
   }
   else if (balance_factor < -1) {
-    if (height(node->right->right) > height(node->right->left)) {
+    if (height(node->right->right) < height(node->right->left)) {
       TreeNode* rightChild = node->right;
       TreeNode* rlChild = rightChild->left;
       rightChild->left = rlChild->right;
