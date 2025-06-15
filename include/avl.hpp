@@ -226,9 +226,7 @@ class AVL {
 
 template <class T>
 int AVL<T>::height(TreeNode* node) const {
-  if (node == NULL) {
-    return -1;
-  }
+  if (node == NULL) {return -1;}
   return 1 + std::max(height(node->left), height(node->right));
 }
 
